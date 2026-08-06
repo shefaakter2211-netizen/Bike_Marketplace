@@ -1,0 +1,19 @@
+body{
+  background-color: #f8f9fa;
+}
+.navbar-brand{
+    font-weight: bold;
+    color: #1F3A5F !important;
+
+}
+.hero-section{
+    background-color: #1F3A5F;
+    color: white;
+    padding: 80px 0;
+}
+footer {
+    background-color: #1F3A5F;
+    color: white;
+    padding: 20px 0;
+    margin-top: 60px;
+}
