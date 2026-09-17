@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Buyer Dashboard - Bike Marketplace{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+```
+<!-- Dashboard Header -->
+<div class="dashboard-header mb-4">
+    <h2>Welcome, {{ current_user.name }}!</h2>
+    <p>Find your perfect bike and manage your marketplace activities.</p>
+</div>
+
+<!-- Dashboard Cards -->
+<div class="row g-4">
+
+    <!-- Browse Bikes -->
+    <div class="col-md-6 col-lg-3">
+        <div class="dashboard-card">
+            <h5>Browse Bikes</h5>
+            <p>Search and explore available bikes.</p>
+            <a href="/browse" class="btn btn-primary">Browse</a>
+        </div>
+    </div>
+
+    <!-- Wishlist -->
+    <div class="col-md-6 col-lg-3">
+        <div class="dashboard-card">
+            <h5>My Wishlist</h5>
+            <p>View bikes you have saved.</p>
+            <a href="#" class="btn btn-primary">Wishlist</a>
+        </div>
+    </div>
+
+    <!-- Compare Bikes -->
+    <div class="col-md-6 col-lg-3">
+        <div class="dashboard-card">
+            <h5>Compare Bikes</h5>
+            <p>Compare bikes side by side.</p>
+            <a href="#" class="btn btn-primary">Compare</a>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="col-md-6 col-lg-3">
+        <div class="dashboard-card">
+            <h5>Messages</h5>
+            <p>Contact sellers about bikes.</p>
+            <a href="#" class="btn btn-primary">Messages</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Logout -->
+<div class="mt-5">
+    <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger">
+        Logout
+    </a>
+</div>
+```
+
+</div>
+
+{% endblock %}
