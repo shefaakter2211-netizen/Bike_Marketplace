@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}My Wishlist - Bike Marketplace{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2 class="mb-4">My Wishlist</h2>
+
+    <div class="row g-4">
+
+        {% if bikes %}
+
+            {% for bike in bikes %}
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            {{ bike.title }}
+                        </h5>
+
+                        <p class="card-text">
+                            <strong>Brand:</strong> {{ bike.brand }}<br>
+                            <strong>Model:</strong> {{ bike.model }}<br>
+                            <strong>Year:</strong> {{ bike.manufacturing_year }}<br>
+                            <strong>CC:</strong> {{ bike.cc }}<br>
+                            <strong>Price:</strong> ৳{{ bike.price }}<br>
+                            <strong>Location:</strong> {{ bike.location }}
+                        </p>
+
+                        <a href="{{ url_for('main.bike_details', bike_id=bike.id) }}"
+                           class="btn btn-primary">
+                            View Details
+                        </a>
+
+                        <a href="{{ url_for('main.remove_from_wishlist', bike_id=bike.id) }}"
+                           class="btn btn-outline-danger">
+                            Remove from Wishlist
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="col-12">
+
+                <div class="alert alert-info text-center">
+                    Your wishlist is empty.
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

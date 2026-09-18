@@ -48,3 +48,20 @@ class Bike(db.Model):
 
     description = db.Column(db.Text)
     location = db.Column(db.String(100))
+
+class Wishlist(db.Model):
+    __tablename__ = "wishlists"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    buyer_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        nullable=False
+    )
+
+    bike_id = db.Column(
+        db.Integer,
+        db.ForeignKey("bikes.id"),
+        nullable=False
+    )

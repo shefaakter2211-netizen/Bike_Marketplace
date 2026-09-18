@@ -1,5 +1,7 @@
 ﻿from flask import Blueprint, render_template, request, session, redirect, url_for, flash
-from app.models import Bike
+from flask_login import login_required, current_user
+from app import db
+from app.models import Bike, Wishlist
 
 main_bp = Blueprint("main", __name__)
 
@@ -127,3 +129,68 @@ def clear_compare():
     flash("Comparison cleared.", "info")
 
     return redirect(url_for("main.browse"))
+
+@main_bp.route("/wishlist/add/<int:bike_id>")
+@login_required
+def add_to_wishlist(bike_id):
+
+    bike = Bike.query.get_or_404(bike_id)
+
+    existing_wishlist = Wishlist.query.filter_by(
+        buyer_id=current_user.id,
+        bike_id=bike.id
+    ).first()
+
+    if existing_wishlist:
+        flash("Bike is already in your wishlist.", "info")
+        return redirect(url_for("main.browse"))
+
+    wishlist = Wishlist(
+        buyer_id=current_user.id,
+        bike_id=bike.id
+    )
+
+    db.session.add(wishlist)
+    db.session.commit()
+
+    flash("Bike added to wishlist.", "success")
+
+    return redirect(url_for("main.browse"))
+
+@main_bp.route("/wishlist")
+@login_required
+def wishlist():
+
+    wishlist_items = Wishlist.query.filter_by(
+        buyer_id=current_user.id
+    ).all()
+
+    bikes = []
+
+    for item in wishlist_items:
+        bike = Bike.query.get(item.bike_id)
+
+        if bike:
+            bikes.append(bike)
+
+    return render_template(
+        "wishlist.html",
+        bikes=bikes
+    )
+
+@main_bp.route("/wishlist/remove/<int:bike_id>")
+@login_required
+def remove_from_wishlist(bike_id):
+
+    wishlist_item = Wishlist.query.filter_by(
+        buyer_id=current_user.id,
+        bike_id=bike_id
+    ).first()
+
+    if wishlist_item:
+        db.session.delete(wishlist_item)
+        db.session.commit()
+
+        flash("Bike removed from wishlist.", "info")
+
+    return redirect(url_for("main.wishlist"))

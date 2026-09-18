@@ -30,7 +30,9 @@
         <div class="dashboard-card">
             <h5>My Wishlist</h5>
             <p>View bikes you have saved.</p>
-            <a href="#" class="btn btn-primary">Wishlist</a>
+            <a href="{{ url_for('main.wishlist') }}" class="btn btn-primary">
+                Wishlist
+            </a>        
         </div>
     </div>
 
@@ -39,7 +41,9 @@
         <div class="dashboard-card">
             <h5>Compare Bikes</h5>
             <p>Compare bikes side by side.</p>
-            <a href="#" class="btn btn-primary">Compare</a>
+            <a href="{{ url_for('main.compare_bikes') }}" class="btn btn-primary">
+                Compare
+            </a>       
         </div>
     </div>
 
