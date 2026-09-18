@@ -156,6 +156,11 @@
 
     </form>
 
+    <a href="{{ url_for('main.compare_bikes') }}"
+       class="btn btn-success mb-4">
+        Compare Selected Bikes
+    </a>
+
     <div class="row g-4">
 
     {% if bikes %}
@@ -184,6 +189,10 @@
                         View Details
                     </a>
 
+                    <a href="{{ url_for('main.add_to_compare', bike_id=bike.id) }}"
+                       class="btn btn-outline-primary">
+                        Add to Compare
+                    </a>
                 </div>
 
             </div>

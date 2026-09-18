@@ -1,4 +1,4 @@
-﻿from flask import Blueprint, render_template, request
+﻿from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 from app.models import Bike
 
 main_bp = Blueprint("main", __name__)
@@ -85,3 +85,45 @@ def bike_details(bike_id):
     bike = Bike.query.get_or_404(bike_id)
 
     return render_template("bike_details.html", bike=bike)
+
+@main_bp.route("/compare/add/<int:bike_id>")
+def add_to_compare(bike_id):
+
+    bike = Bike.query.get_or_404(bike_id)
+
+    compare_list = session.get("compare_list", [])
+
+    if bike_id not in compare_list:
+
+        if len(compare_list) >= 2:
+            flash("You can compare only 2 bikes at a time.", "warning")
+            return redirect(url_for("main.browse"))
+
+        compare_list.append(bike_id)
+        session["compare_list"] = compare_list
+
+        flash("Bike added to comparison.", "success")
+
+    return redirect(url_for("main.browse"))
+
+@main_bp.route("/compare")
+def compare_bikes():
+
+    compare_list = session.get("compare_list", [])
+
+    bikes = Bike.query.filter(Bike.id.in_(compare_list)).all()
+
+    if len(bikes) != 2:
+        flash("Please select exactly 2 bikes to compare.", "warning")
+        return redirect(url_for("main.browse"))
+
+    return render_template("compare.html", bikes=bikes)
+
+@main_bp.route("/compare/clear")
+def clear_compare():
+
+    session.pop("compare_list", None)
+
+    flash("Comparison cleared.", "info")
+
+    return redirect(url_for("main.browse"))
