@@ -1,7 +1,7 @@
 ﻿from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 from flask_login import login_required, current_user
 from app import db
-from app.models import Bike, Wishlist
+from app.models import Bike, Wishlist, User
 
 main_bp = Blueprint("main", __name__)
 
@@ -194,3 +194,108 @@ def remove_from_wishlist(bike_id):
         flash("Bike removed from wishlist.", "info")
 
     return redirect(url_for("main.wishlist"))
+
+@main_bp.route("/admin/users")
+@login_required
+def admin_users():
+
+    if current_user.role != "admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("auth.dashboard"))
+
+    users = User.query.all()
+
+    return render_template(
+        "admin_users.html",
+        users=users
+    )
+
+@main_bp.route("/admin/users/<int:user_id>/role", methods=["POST"])
+@login_required
+def change_user_role(user_id):
+
+    if current_user.role != "admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("auth.dashboard"))
+
+    user = User.query.get_or_404(user_id)
+
+    new_role = request.form.get("role")
+
+    if new_role not in ["buyer", "seller", "admin"]:
+        flash("Invalid role.", "danger")
+        return redirect(url_for("main.admin_users"))
+
+    user.role = new_role
+    db.session.commit()
+
+    flash("User role updated successfully.", "success")
+
+    return redirect(url_for("main.admin_users"))
+
+@main_bp.route("/admin/listings")
+@login_required
+def admin_listings():
+
+    if current_user.role != "admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("auth.dashboard"))
+
+    bikes = Bike.query.all()
+
+    return render_template(
+        "admin_listings.html",
+        bikes=bikes
+    )
+
+@main_bp.route("/admin/listings/<int:bike_id>/approve", methods=["POST"])
+@login_required
+def approve_listing(bike_id):
+
+    if current_user.role != "admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("auth.dashboard"))
+
+    bike = Bike.query.get_or_404(bike_id)
+
+    bike.is_approved = True
+    db.session.commit()
+
+    flash("Bike listing approved successfully.", "success")
+
+    return redirect(url_for("main.admin_listings"))
+
+
+@main_bp.route("/admin/listings/<int:bike_id>/reject", methods=["POST"])
+@login_required
+def reject_listing(bike_id):
+
+    if current_user.role != "admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("auth.dashboard"))
+
+    bike = Bike.query.get_or_404(bike_id)
+
+    bike.is_approved = False
+    db.session.commit()
+
+    flash("Bike listing rejected.", "info")
+
+    return redirect(url_for("main.admin_listings"))
+
+@main_bp.route("/admin/moderation")
+@login_required
+def moderation():
+
+    if current_user.role != "admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("auth.dashboard"))
+
+    pending_bikes = Bike.query.filter_by(
+        is_approved=False
+    ).all()
+
+    return render_template(
+        "moderation.html",
+        bikes=pending_bikes
+    )

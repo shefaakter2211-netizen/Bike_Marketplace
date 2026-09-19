@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Bike Marketplace{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="dashboard-header mb-4">
+        <h2>Welcome, {{ current_user.name }}!</h2>
+        <p>Manage users, bike listings, and marketplace activities.</p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-lg-4">
+            <div class="dashboard-card">
+                <h5>Manage Listings</h5>
+                <p>Review and manage bike listings.</p>
+                <a href="{{ url_for('main.admin_listings') }}"
+                   class="btn btn-primary">
+                    Manage Listings
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="dashboard-card">
+                <h5>Manage Users</h5>
+                <p>View and manage marketplace users.</p>
+                <a href="{{ url_for('main.admin_users') }}" class="btn btn-primary">
+                    Manage Users
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="dashboard-card">
+                <h5>Moderation</h5>
+                <p>Approve or reject bike listings.</p>
+                <a href="{{ url_for('main.moderation') }}"
+                   class="btn btn-primary">
+                    Moderation
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-5">
+        <a href="{{ url_for('auth.logout') }}"
+           class="btn btn-outline-danger">
+            Logout
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

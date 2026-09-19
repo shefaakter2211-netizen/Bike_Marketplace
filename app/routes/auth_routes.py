@@ -47,8 +47,12 @@ def login():
 @auth_bp.route("/dashboard")
 @login_required
 def dashboard():
+
     if current_user.role == "buyer":
         return render_template("buyer_dashboard.html")
+
+    if current_user.role == "admin":
+        return render_template("admin_dashboard.html")
 
     return f"<h2>Welcome, {current_user.name}! Your role is: {current_user.role}</h2><a href=\"/logout\">Logout</a>"
 

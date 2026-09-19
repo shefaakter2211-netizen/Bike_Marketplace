@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Moderation - Bike Marketplace{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="dashboard-header mb-4">
+        <h2>Moderation</h2>
+        <p>Review pending bike listings.</p>
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Price</th>
+                    <th>Seller ID</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for bike in bikes %}
+
+                <tr>
+
+                    <td>{{ bike.id }}</td>
+
+                    <td>{{ bike.title }}</td>
+
+                    <td>{{ bike.brand }}</td>
+
+                    <td>{{ bike.model }}</td>
+
+                    <td>{{ bike.price }}</td>
+
+                    <td>{{ bike.seller_id }}</td>
+
+                    <td>
+                        <span class="badge bg-warning text-dark">
+                            Pending
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <form method="POST"
+                              action="{{ url_for('main.approve_listing', bike_id=bike.id) }}"
+                              class="d-inline">
+
+                            <button type="submit"
+                                    class="btn btn-sm btn-success">
+                                Approve
+                            </button>
+
+                        </form>
+
+                        <form method="POST"
+                              action="{{ url_for('main.reject_listing', bike_id=bike.id) }}"
+                              class="d-inline">
+
+                            <button type="submit"
+                                    class="btn btn-sm btn-danger">
+                                Reject
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+                    <td colspan="8" class="text-center">
+                        No pending listings.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="mt-4">
+
+        <a href="{{ url_for('auth.dashboard') }}"
+           class="btn btn-secondary">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
