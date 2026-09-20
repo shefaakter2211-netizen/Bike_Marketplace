@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{{ bike.title }} - Bike Marketplace{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <a href="/browse" class="btn btn-secondary mb-4">
+        ← Back to Browse
+    </a>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body p-4">
+
+            <h2 class="mb-4">{{ bike.title }}</h2>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <h5 class="mb-3">Bike Information</h5>
+
+                    <p>
+                        <strong>Brand:</strong> {{ bike.brand }}
+                    </p>
+
+                    <p>
+                        <strong>Model:</strong> {{ bike.model }}
+                    </p>
+
+                    <p>
+                        <strong>Manufacturing Year:</strong>
+                        {{ bike.manufacturing_year }}
+                    </p>
+
+                    <p>
+                        <strong>Engine CC:</strong> {{ bike.cc }}
+                    </p>
+
+                    <p>
+                        <strong>Condition:</strong> {{ bike.condition_type }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <h5 class="mb-3">Price & Location</h5>
+
+                    <p>
+                        <strong>Price:</strong> ৳{{ bike.price }}
+                    </p>
+
+                    <p>
+                        <strong>Mileage:</strong> {{ bike.mileage_km }} km
+                    </p>
+
+                    <p>
+                        <strong>Location:</strong> {{ bike.location }}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong> {{ bike.status }}
+                    </p>
+
+                    <p>
+                        <strong>Views:</strong> {{ bike.view_count }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <h5>Description</h5>
+
+            <p>
+                {{ bike.description }}
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

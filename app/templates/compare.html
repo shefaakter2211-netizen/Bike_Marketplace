@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Compare Bikes - Bike Marketplace{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2 class="mb-4">Compare Bikes</h2>
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered text-center">
+
+            <thead class="table-light">
+
+                <tr>
+                    <th>Feature</th>
+
+                    {% for bike in bikes %}
+                    <th>{{ bike.title }}</th>
+                    {% endfor %}
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <th>Brand</th>
+
+                    {% for bike in bikes %}
+                    <td>{{ bike.brand }}</td>
+                    {% endfor %}
+
+                </tr>
+
+                <tr>
+                    <th>Model</th>
+
+                    {% for bike in bikes %}
+                    <td>{{ bike.model }}</td>
+                    {% endfor %}
+
+                </tr>
+
+                <tr>
+                    <th>Price</th>
+
+                    {% for bike in bikes %}
+                    <td>৳{{ bike.price }}</td>
+                    {% endfor %}
+
+                </tr>
+
+                <tr>
+                    <th>Manufacturing Year</th>
+
+                    {% for bike in bikes %}
+                    <td>{{ bike.manufacturing_year }}</td>
+                    {% endfor %}
+
+                </tr>
+
+                <tr>
+                    <th>Engine CC</th>
+
+                    {% for bike in bikes %}
+                    <td>{{ bike.cc }}</td>
+                    {% endfor %}
+
+                </tr>
+
+                <tr>
+                    <th>Mileage</th>
+
+                    {% for bike in bikes %}
+                    <td>{{ bike.mileage_km }} km</td>
+                    {% endfor %}
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <a href="/browse" class="btn btn-secondary mt-3">
+        Back to Browse
+    </a>
+
+    <a href="{{ url_for('main.clear_compare') }}"
+       class="btn btn-danger mt-3">
+        Clear Comparison
+    </a>
+
+</div>
+
+{% endblock %}

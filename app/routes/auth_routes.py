@@ -47,31 +47,13 @@ def login():
 @auth_bp.route("/dashboard")
 @login_required
 def dashboard():
-    role = current_user.role
+    if current_user.role == "buyer":
+        return render_template("buyer_dashboard.html")
 
-    if role == "buyer":
-        role_color = "primary"
-        cards = [
-            {"title": "Browse Bikes", "desc": "Search and filter new & secondhand bikes.", "link": "/browse", "action": "Browse Now"},
-            {"title": "My Wishlist", "desc": "View bikes you have saved for later.", "link": "/wishlist", "action": "View Wishlist"},
-            {"title": "My Inquiries", "desc": "Track messages you have sent to sellers.", "link": "/my-inquiries", "action": "View Inquiries"},
-        ]
-    elif role == "seller":
-        role_color = "success"
-        cards = [
-            {"title": "My Listings", "desc": "View and manage all your bike listings.", "link": "/my-listings", "action": "View Listings"},
-            {"title": "Add New Listing", "desc": "List a new bike, new or secondhand.", "link": "/add-listing", "action": "Add Listing"},
-            {"title": "Get Verified", "desc": "Upload NID and papers to become a Trusted Seller.", "link": "/verify-seller", "action": "Apply Now"},
-        ]
-    else:
-        role_color = "dark"
-        cards = [
-            {"title": "Moderate Listings", "desc": "Approve, edit, or block pending listings.", "link": "/admin/listings", "action": "Review Listings"},
-            {"title": "Manage Users", "desc": "Activate or suspend user accounts.", "link": "/admin/users", "action": "Manage Users"},
-            {"title": "Analytics", "desc": "View platform-wide stats and trends.", "link": "/admin/analytics", "action": "View Analytics"},
-        ]
+    if current_user.role == "admin":
+        return render_template("admin_dashboard.html")
 
-    return render_template("dashboard.html", role_color=role_color, cards=cards)
+    return f"<h2>Welcome, {current_user.name}! Your role is: {current_user.role}</h2><a href=\"/logout\">Logout</a>"
 
 @auth_bp.route("/logout")
 @login_required

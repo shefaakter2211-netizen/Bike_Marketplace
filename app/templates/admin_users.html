@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Users - Bike Marketplace{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="dashboard-header mb-4">
+        <h2>Manage Users</h2>
+        <p>View all users of the Bike Marketplace.</p>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                        <form method="POST"
+                              action="{{ url_for('main.change_user_role', user_id=user.id) }}">
+                    
+                            <select name="role" class="form-select mb-2">
+                                <option value="buyer" {% if user.role == "buyer" %}selected{% endif %}>
+                                    Buyer
+                                </option>
+                    
+                                <option value="seller" {% if user.role == "seller" %}selected{% endif %}>
+                                    Seller
+                                </option>
+                    
+                                <option value="admin" {% if user.role == "admin" %}selected{% endif %}>
+                                    Admin
+                                </option>
+                            </select>
+                    
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                Update
+                            </button>
+                    
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ url_for('auth.dashboard') }}"
+           class="btn btn-secondary">
+            Back to Dashboard
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -21,3 +21,47 @@ class User(UserMixin, db.Model):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+
+class Bike(db.Model):
+    __tablename__ = "bikes"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    seller_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    title = db.Column(db.String(150), nullable=False)
+    brand = db.Column(db.String(100), nullable=False)
+    model = db.Column(db.String(100), nullable=False)
+
+    manufacturing_year = db.Column(db.Integer)
+    cc = db.Column(db.Integer)
+    price = db.Column(db.Float, nullable=False)
+
+    condition_type = db.Column(db.String(20))
+    mileage_km = db.Column(db.Integer)
+
+    status = db.Column(db.String(20), default="available")
+    is_approved = db.Column(db.Boolean, default=False)
+
+    view_count = db.Column(db.Integer, default=0)
+
+    description = db.Column(db.Text)
+    location = db.Column(db.String(100))
+
+class Wishlist(db.Model):
+    __tablename__ = "wishlists"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    buyer_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        nullable=False
+    )
+
+    bike_id = db.Column(
+        db.Integer,
+        db.ForeignKey("bikes.id"),
+        nullable=False
+    )

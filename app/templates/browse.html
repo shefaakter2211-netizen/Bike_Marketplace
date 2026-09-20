@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Bikes - Bike Marketplace{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2 class="mb-4">Browse Bikes</h2>
+
+    <form method="GET" action="/browse" class="mb-4">
+
+        <div class="mb-3">
+
+            <label class="form-label">Sort By</label>
+        
+            <select name="sort" class="form-select">
+        
+                <option value="" {% if not sort %}selected{% endif %}>
+                    Default
+                </option>
+        
+                <option value="price_low" {% if sort == "price_low" %}selected{% endif %}>
+                    Price: Low to High
+                </option>
+        
+                <option value="price_high" {% if sort == "price_high" %}selected{% endif %}>
+                    Price: High to Low
+                </option>
+        
+                <option value="newest" {% if sort == "newest" %}selected{% endif %}>
+                    Newest
+                </option>
+        
+                <option value="most_viewed" {% if sort == "most_viewed" %}selected{% endif %}>
+                    Most Viewed
+                </option>
+        
+            </select>
+
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label class="form-label">Brand</label>
+                <select name="brand" class="form-select">
+                    <option value="">All Brands</option>
+                
+                    <option value="Yamaha" {% if brand == "Yamaha" %}selected{% endif %}>
+                        Yamaha
+                    </option>
+                
+                    <option value="Honda" {% if brand == "Honda" %}selected{% endif %}>
+                        Honda
+                    </option>
+                
+                    <option value="Suzuki" {% if brand == "Suzuki" %}selected{% endif %}>
+                        Suzuki
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Location</label>
+                <input
+                    type="text"
+                    name="location"
+                    class="form-control"
+                    placeholder="Enter location"
+                    value="{{ location or '' }}"
+                >
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Condition</label>
+                <select name="condition" class="form-select">
+
+                    <option value="">All Conditions</option>
+                
+                    <option value="New" {% if condition == "New" %}selected{% endif %}>
+                        New
+                    </option>
+                
+                    <option value="Used" {% if condition == "Used" %}selected{% endif %}>
+                        Used
+                    </option>
+                
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Minimum Price</label>
+                <input
+                    type="number"
+                    name="min_price"
+                    class="form-control"
+                    placeholder="Minimum price"
+                    value="{{ min_price or '' }}"
+                >                
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Maximum Price</label>
+                <input
+                    type="number"
+                    name="max_price"
+                    class="form-control"
+                    placeholder="Maximum price"
+                    value="{{ max_price or '' }}"
+                >
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Year</label>
+                <input
+                    type="number"
+                    name="year"
+                    class="form-control"
+                    placeholder="Enter year"
+                    value="{{ year or '' }}"
+                >
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Minimum CC</label>
+                <input
+                    type="number"
+                    name="min_cc"
+                    class="form-control"
+                    placeholder="Minimum CC"
+                    value="{{ min_cc or '' }}"
+                >
+            </div>
+            
+            <div class="col-md-4">
+                <label class="form-label">Maximum CC</label>
+                <input
+                    type="number"
+                    name="max_cc"
+                    class="form-control"
+                    placeholder="Maximum CC"
+                    value="{{ max_cc or '' }}"
+                >
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">
+            Apply Filter
+        </button>
+
+        <a href="/browse" class="btn btn-secondary mt-3">
+            Clear
+        </a>
+
+    </form>
+
+    <a href="{{ url_for('main.compare_bikes') }}"
+       class="btn btn-success mb-4">
+        Compare Selected Bikes
+    </a>
+
+    <div class="row g-4">
+
+    {% if bikes %}
+
+        {% for bike in bikes %}
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">{{ bike.title }}</h5>
+
+                    <p class="card-text">
+                        <strong>Brand:</strong> {{ bike.brand }}<br>
+                        <strong>Model:</strong> {{ bike.model }}<br>
+                        <strong>Year:</strong> {{ bike.manufacturing_year }}<br>
+                        <strong>CC:</strong> {{ bike.cc }}<br>
+                        <strong>Price:</strong> ৳{{ bike.price }}<br>
+                        <strong>Location:</strong> {{ bike.location }}
+                    </p>
+
+                    <a href="{{ url_for('main.bike_details', bike_id=bike.id) }}"
+                       class="btn btn-primary">
+                        View Details
+                    </a>
+
+                    <a href="{{ url_for('main.add_to_compare', bike_id=bike.id) }}"
+                       class="btn btn-outline-primary">
+                        Add to Compare
+                    </a>
+
+                    <a href="{{ url_for('main.add_to_wishlist', bike_id=bike.id) }}"
+                       class="btn btn-outline-danger">
+                        Add to Wishlist
+                    </a>
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                No bikes found matching your filters.
+            </div>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
